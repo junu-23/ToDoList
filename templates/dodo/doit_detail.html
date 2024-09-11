@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container p-3 w-75 mt-5 bg-light shadow">
+    <h1>질문 상세 페이지</h1>
+    <p><strong>제목:</strong> {{ doit.what }}</p>
+    <p><strong>작성일시:</strong> {{ doit.create_date }}</p>
+    <p><strong>데드라인:</strong> {{ doit.deadline }}</p>
+<!--    doit.deadline : 모델의 인스턴스-->
+    <p><strong>내용:</strong> {{ doit.detail }}</p>
+    <a href="{% url 'dodo:index' %}" class="btn btn-primary">목록으로 돌아가기</a>
+<!--    index는 config에서 ''에 대한 매핑을 지정해 두었기에 dodo를 쓰지 않아도 된다.-->
+    <!--dodo:doit_delete pk=Doit.pk ??-->
+</div>
+
+{% endblock %}
+
+<!--폼은 사용자가 입력한 데이터를 검증하고 처리할 때 사용되며,
+데이터베이스에서 가져온 값을 보여주는 것이 아니라 새로운 데이터를 입력받는 역할을 합니다.-->

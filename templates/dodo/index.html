@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--base.html 오버라이드-->
+<div class="container p-3 w-75 mt-5 bg-warning shadow">
+    <h1>To Do List</h1> <span>{{ create_date }}</span>
+    <form method="POST" action="{% url 'dodo:doit_create' %}">
+    <!--위 코드의 네임스페이스-> app_name:dodo-->
+        <!--폼 제출시 연결될 url: path('create/'-->
+        {% csrf_token %}
+        <input type="submit" value="할일 등록하기" class="btn btn-primary mt-3">
+        <a href="{% url 'dodo:done_list' %}" class="btn btn-success" style="margin-top:16px">완료 목록</a>
+        <!--submit.method == POST?-->
+    </form>
+    <hr>
+    <div class="mt-4">
+        <h2 class="mb-3">할일 목록</h2>
+        {% if doit_list %}
+            <table class="table table-hover" style="border: 1.8px solid #DBA901; font-weight : bold;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>할일</th>
+                        <th>작성일시</th>
+                        <th>데드라인</th>
+                        <th>편집</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doit in doit_list %}
+                        <tr style="vertical-align: middle;">
+                            <td><a class="btn btn-warning btn-sm" style="border-radius: 15px; font-weight: bold;"
+                                    href="{% url 'dodo:doit_detail' pk=doit.pk %}">{{ doit.what }}</a></td>
+                            <td>{{ doit.create_date }}</td>
+                            <td >{{ doit.deadline }}</td>
+                            <td><a href="{% url 'dodo:doit_modify' doit.pk%}" class="btn btn-primary">수정</a>
+
+                            <a href="javascript:void(0)" class="delete btn btn-danger"
+                            data-uri="{% url 'dodo:doit_delete' doit.pk %}">삭제</a></td>
+
+                            <td><a href="{% url 'dodo:doit_done' pk=doit.pk %}" class="btn btn-success">
+                                완료</a></td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>등록된 할일이 없습니다.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock %}

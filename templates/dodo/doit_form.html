@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">할일 등록</h5>
+    <form method="post" class="post-form my-3">
+        {% csrf_token %}
+        <!-- 오류표시 START -->
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+            {% if field.errors %}
+            <strong>{{ field.label }}</strong>
+            {{ field.errors }}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- 오류 표시 END -->
+        <!--        할일제목-->
+        <div class="form-group">
+            <label for="what">할일 제목</label>
+        <!--for=what 속성은 id=what인 입력필드와 연결, name=what: 폼제출시 what이라는 이름으로 서버에 전송-->
+            <input type="text" class="form-control" name="what" id="what"
+                value="{{ form.what.value|default_if_none:'' }}">
+            <!--value는 주로 이전에 입력된 값 미리 채워놓으려고 씀 | 오류 발생시 기본값을 유지하기 위한 코드-->
+        </div>
+<!--        할일 상세-->
+        <div class="form-group">
+            <label for="detail" class="form-label">내용</label>
+            <textarea class="form-control" name="detail" id="detail" rows="10">
+                {{ form.detail.value|default_if_none:'' }}</textarea>
+        </div>
+            <!--textarea는 value속성이 없음-->
+
+        <!--데드라인-->
+        <div class="form-group">
+            <label for="deadline">데드라인</label>
+            <input type="text" class="form-control" name="deadline" id="deadline"
+                value="{{ form.deadline.value|default_if_none:'' }}">
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">저장하기</button>
+        <a href="{% url 'dodo:index' %}" class="btn btn-primary" style="margin-top:24px">목록으로 돌아가기</a>
+    </form>
+</div>
+{% endblock %}
