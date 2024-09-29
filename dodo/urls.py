@@ -12,5 +12,5 @@ urlpatterns = [
     path('<int:pk>/', views.DoitDetail, name='doit_detail'),
     path('done/', views.done_list, name='done_list'), #  완료 리스트
     path('done/<int:pk>/', views.doit_done, name='doit_done'),
-    #  완료된 작업목록 보기
+
 ]
